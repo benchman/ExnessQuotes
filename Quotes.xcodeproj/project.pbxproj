@@ -27,6 +27,7 @@
 		B4C0DEF92014C0160061C1F5 /* UIViewController+LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C0DEF82014C0160061C1F5 /* UIViewController+LoadingView.swift */; };
 		B4D18BAB2014F64600E1CF3D /* PairsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D18BAA2014F64600E1CF3D /* PairsListViewController.swift */; };
 		B4D18BAD2014F77100E1CF3D /* PairsListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D18BAC2014F77100E1CF3D /* PairsListPresenter.swift */; };
+		B4D18BAF201512E900E1CF3D /* PrefsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D18BAE201512E900E1CF3D /* PrefsStorage.swift */; };
 		D7FEAE3F3712A04EB5EE96C8 /* Pods_Quotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98E5D3B86CAB4260E3EE1509 /* Pods_Quotes.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,7 @@
 		B4C0DEF82014C0160061C1F5 /* UIViewController+LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+LoadingView.swift"; sourceTree = "<group>"; };
 		B4D18BAA2014F64600E1CF3D /* PairsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairsListViewController.swift; sourceTree = "<group>"; };
 		B4D18BAC2014F77100E1CF3D /* PairsListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairsListPresenter.swift; sourceTree = "<group>"; };
+		B4D18BAE201512E900E1CF3D /* PrefsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsStorage.swift; sourceTree = "<group>"; };
 		B5F43B5B100C6937FE95E460 /* Pods-Quotes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quotes.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quotes/Pods-Quotes.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,6 +131,7 @@
 				B4C0DEF82014C0160061C1F5 /* UIViewController+LoadingView.swift */,
 				B4D18BAA2014F64600E1CF3D /* PairsListViewController.swift */,
 				B4D18BAC2014F77100E1CF3D /* PairsListPresenter.swift */,
+				B4D18BAE201512E900E1CF3D /* PrefsStorage.swift */,
 			);
 			path = Quotes;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				B4B5F27420149C4100BAD470 /* QuoteViewData.swift in Sources */,
 				B49854232014A2AA009B83B2 /* Errors.swift in Sources */,
 				B4B5F26C20148BF600BAD470 /* TickResponse.swift in Sources */,
+				B4D18BAF201512E900E1CF3D /* PrefsStorage.swift in Sources */,
 				B4D18BAD2014F77100E1CF3D /* PairsListPresenter.swift in Sources */,
 				B4B5F252201472F200BAD470 /* AppDelegate.swift in Sources */,
 				B4B5F26620147FCA00BAD470 /* ExnessClient.swift in Sources */,

@@ -9,8 +9,10 @@
 import Foundation
 
 class QuotesPresenter {
-    init(qoutesClient: QuotesClient) {
+    init(qoutesClient: QuotesClient, prefs: PrefsStroring) {
         self.quotesClient = qoutesClient
+        self.prefs = prefs
+        pairs = prefs.loadPairs()
     }
     
     weak var view: QuotesView?
@@ -38,6 +40,7 @@ class QuotesPresenter {
         view?.showLoader()
         let old = self.pairs
         self.pairs = pairs
+        prefs.savePairs(pairs)
         unsubscribing = true
         quotesClient.unsubscribe(pairs: old)
     }
@@ -55,6 +58,7 @@ class QuotesPresenter {
     }
     
     private let quotesClient: QuotesClient
+    private let prefs: PrefsStroring
     private var pairs: [Pairs] = Pairs.all
     private var quotes: [QuoteViewData] = []
     private var unsubscribing: Bool = false

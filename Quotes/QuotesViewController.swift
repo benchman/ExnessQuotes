@@ -18,7 +18,8 @@ protocol QuotesView: class {
 class QuotesViewController: UIViewController {
     lazy var presenter: QuotesPresenter! = {
         let client = ExnessClient(urlString: "wss://quotes.exness.com:18400")
-        return QuotesPresenter(qoutesClient: client)
+        let prefs = PrefsStorage()
+        return QuotesPresenter(qoutesClient: client, prefs: prefs)
     }()
 
     override func viewDidLoad() {
