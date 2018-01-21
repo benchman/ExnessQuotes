@@ -26,17 +26,28 @@ class QuotesPresenter: QuotesPresenting {
         self.quotesClient = qoutesClient
         self.prefs = prefs
         pairs = prefs.loadPairs()
+        self.networkChecker = networkChecker
+        
+        networkChecker.whenReachable = { [weak self] in
+            self?.connect()
+        }
     }
     
     weak var view: QuotesView?
     
     func connect() {
+        if isConnected {
+           return
+        }
+        isConnected = true
+        networkChecker.stop()
         self.view?.showLoader()
         quotesClient.delegate = self
         quotesClient.connect()
     }
     
     func disconnect() {
+        isConnected = false
         quotesClient.delegate = nil
         quotesClient.disconnect()
     }
@@ -75,6 +86,8 @@ class QuotesPresenter: QuotesPresenting {
     private var pairs: [Pairs] = Pairs.all
     private var quotes: [QuoteViewData] = []
     private var unsubscribing: Bool = false
+    private var isConnected: Bool = false
+    private var networkChecker: NetworkStatusChecking
     
     private func subscribe() {
         quotesClient.subscibe(pairs: pairs)
@@ -128,5 +141,12 @@ extension QuotesPresenter: QuotesClientDelegate {
     func errorHappened(error: Error) {
         view?.hideLoader()
         view?.showError(error)
+        disconnect()
+        if networkChecker.isReachable {
+            connect()
+        }
+        else {
+            networkChecker.start()
+        }
     }
 }

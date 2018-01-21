@@ -11,32 +11,40 @@ import Reachability
 
 protocol NetworkStatusChecking: class {
     typealias NetworkStatucChangedCallback = () -> ()
-    
-    init(urlString: String)
+    var isReachable: Bool { get }
+    func start()
+    func stop()
     var whenReachable: NetworkStatucChangedCallback? { get set }
     var whenUnreachable: NetworkStatucChangedCallback? { get set }
 }
 
 class NetworkStatusChecker: NetworkStatusChecking {
-    required init(urlString: String) {
-        self.reachability = Reachability(hostname: urlString)!
-    }
-    
-    var whenReachable: NetworkStatusChecking.NetworkStatucChangedCallback? {
-        didSet {
-            reachability.whenReachable = { [weak self] _ in
-                self?.whenReachable?()
-            }
+    init() {
+        self.reachability = Reachability(hostname: "http://apple.com")!
+        reachability.whenReachable = { [weak self] _ in
+            self?.whenReachable?()
+        }
+        
+        reachability.whenUnreachable = { [weak self] _ in
+            self?.whenUnreachable?()
         }
     }
     
-    var whenUnreachable: NetworkStatusChecking.NetworkStatucChangedCallback? {
-        didSet {
-            reachability.whenUnreachable = { [weak self] _ in
-                self?.whenUnreachable?()
-            }
-        }
+    var isReachable: Bool {
+        return reachability.connection != .none
     }
+    
+    func start() {
+        try? reachability.startNotifier()
+    }
+    
+    func stop() {
+        reachability.stopNotifier()
+    }
+    
+    var whenReachable: NetworkStatusChecking.NetworkStatucChangedCallback?
+    
+    var whenUnreachable: NetworkStatusChecking.NetworkStatucChangedCallback?
     
     private let reachability: Reachability
 }

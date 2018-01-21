@@ -19,6 +19,11 @@ class ExnessClient: NSObject, QuotesClient {
     }
     
     func connect() {
+        print("connect")
+        if socket != nil && socket!.readyState != .closed  {
+            print("socket already opened")
+            return
+        }
         let url = URL(string: urlString)!
         let request = URLRequest(url: url)
         socket = PSWebSocket.clientSocket(with: request)

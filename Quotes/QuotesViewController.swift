@@ -20,7 +20,7 @@ class QuotesViewController: UIViewController {
         let url = "wss://quotes.exness.com:18400"
         let client = ExnessClient(urlString: url)
         let prefs = PrefsStorage()
-        let networkChecker = NetworkStatusChecker(urlString: url)
+        let networkChecker = NetworkStatusChecker()
         return QuotesPresenter(qoutesClient: client, prefs: prefs, networkChecker: networkChecker)
     }()
 
