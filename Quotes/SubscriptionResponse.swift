@@ -11,7 +11,7 @@ import ObjectMapper
 
 struct SubsciptionResponse: Mappable {
     var count: Int!
-    var ticks: [Tick]!
+    var ticks: [Tick] = []
     
     init?(map: Map) {
         if map.JSON["subscribed_count"] == nil {

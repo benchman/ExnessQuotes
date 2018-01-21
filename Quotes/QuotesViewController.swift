@@ -16,28 +16,43 @@ protocol QuotesView: class {
 }
 
 class QuotesViewController: UIViewController {
-    var presenter: QuotesPresenter!
+    lazy var presenter: QuotesPresenter! = {
+        let client = ExnessClient(urlString: "wss://quotes.exness.com:18400")
+        return QuotesPresenter(qoutesClient: client)
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        isLoading = false
-        let client = ExnessClient(urlString: "wss://quotes.exness.com:18400")
-        presenter = QuotesPresenter(qoutesClient: client)
         presenter.view = self
         presenter.connect()
     }
     
-    private var quotes: [QuoteViewData] = []
+    override var isLoading: Bool {
+        didSet {
+            tableView.isHidden = isLoading
+            editButton.isEnabled = !isLoading
+        }
+    }
+    
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.tableFooterView = UIView()
+        }
+    }
+    
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    
+    @IBAction func editTouched(_ sender: Any) {
+        let pairsListPresenter = presenter.pairsListPresenter()
+        PairsListViewController.present(from: self, presenter: pairsListPresenter) { [unowned self] pairs in
+            self.presenter.updatePairs(pairs)
         }
     }
 }
 
 extension QuotesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return quotes.count
+        return presenter.numberOfQuotes()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

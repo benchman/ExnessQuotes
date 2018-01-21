@@ -7,15 +7,17 @@
 //
 
 import Foundation
-import Starscream
+import PocketSocket
 import ObjectMapper
 
-class ExnessClient: QuotesClient {
+class ExnessClient: NSObject, QuotesClient {
     weak var delegate: QuotesClientDelegate?
     
     required init(urlString: String) {
         let url = URL(string: urlString)!
-        socket = WebSocket(url: url)
+        let request = URLRequest(url: url)
+        socket = PSWebSocket.clientSocket(with: request)
+        super.init()
         socket.delegate = self
 //        socket.event.open = { [weak self] in
 //            DispatchQueue.main.async {
@@ -52,45 +54,52 @@ class ExnessClient: QuotesClient {
     }
     
     func connect() {
-        socket.connect()
+        socket.open()
     }
     
     func disconnect() {
-        socket.disconnect()
+        socket.close()
     }
     
     func subscibe(pairs: [Pairs]) {
         let message = "SUBSCRIBE: \(pairsString(pairs))"
-        socket.write(string: message)
+        print(message)
+        socket.send(message)
     }
     
     func unsubscribe(pairs: [Pairs]) {
         let message = "UNSUBSCRIBE: \(pairsString(pairs))"
-        socket.write(string: message)
+        print(message)
+        socket.send(message)
     }
     
-    private let socket: WebSocket
+    private let socket: PSWebSocket
 
     private func pairsString(_ pairs: [Pairs]) -> String {
-        return pairs.map { $0.rawValue }.joined(separator: ",")
+        if pairs.isEmpty {
+            return "undefined"
+        }
+        else {
+            return pairs.map { $0.rawValue }.joined(separator: ",")
+        }
     }
     
     deinit {
-        socket.disconnect()
+        socket.close()
     }
 }
 
-extension ExnessClient: WebSocketDelegate {
-    func websocketDidConnect(socket: WebSocketClient) {
+extension ExnessClient: PSWebSocketDelegate {
+    func webSocketDidOpen(_ webSocket: PSWebSocket!) {
         delegate?.connected()
     }
     
-    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-        let errorToShow = error != nil ? error! : AppError.serverUnreachable
-        delegate?.errorHappened(error: errorToShow)
+    func webSocket(_ webSocket: PSWebSocket!, didFailWithError error: Error!) {
+        delegate?.errorHappened(error: error)
     }
     
-    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
+    func webSocket(_ webSocket: PSWebSocket!, didReceiveMessage message: Any!) {
+        let text = message as! String
         print(text)
         if let subscription = SubsciptionResponse(JSONString: text) {
             delegate?.subscriptionUpdated(subscriprion: subscription)
@@ -100,7 +109,8 @@ extension ExnessClient: WebSocketDelegate {
         }
     }
     
-    func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
-        print("data received")
+    func webSocket(_ webSocket: PSWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean: Bool) {
+        let error = AppError.serverUnreachable
+        delegate?.errorHappened(error: error)
     }
 }

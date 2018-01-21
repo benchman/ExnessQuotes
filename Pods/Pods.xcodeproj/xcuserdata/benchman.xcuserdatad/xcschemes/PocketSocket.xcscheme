@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'BF7CDC4C8194B7A4260C50F59F4344FE'
-               BlueprintName = 'Starscream'
+               BlueprintIdentifier = '7B67696F0F6D9ADB2BFA0C79ACD25E5A'
+               BlueprintName = 'PocketSocket'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Starscream.framework'>
+               BuildableName = 'PocketSocket.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

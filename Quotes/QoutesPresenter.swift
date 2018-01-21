@@ -30,9 +30,15 @@ class QuotesPresenter {
     }
     
     func updatePairs(_ pairs: [Pairs]) {
-        let old = pairs
-        quotesClient.unsubscribe(pairs: old)
+        view?.showLoader()
+        let old = self.pairs
         self.pairs = pairs
+        unsubscribing = true
+        quotesClient.unsubscribe(pairs: old)
+    }
+    
+    func pairsListPresenter() -> PairsListPresenter {
+        return PairsListPresenter(pairs: pairs)
     }
     
     private let quotesClient: QuotesClient
@@ -78,6 +84,7 @@ extension QuotesPresenter: QuotesClientDelegate {
         if unsubscribing {
             unsubscribing = false
             subscribe()
+            return
         }
         update(ticks: subscriprion.ticks)
         view?.hideLoader()

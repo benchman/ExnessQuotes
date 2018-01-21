@@ -10,7 +10,7 @@ import Foundation
 import ObjectMapper
 
 struct TickResponse: Mappable {
-    var ticks: [Tick]!
+    var ticks: [Tick] = []
     
     init?(map: Map) {
         if map.JSON["ticks"] == nil {

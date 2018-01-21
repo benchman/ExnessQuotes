@@ -3,7 +3,7 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'Quotes' do
-	pod 'Starscream'
+	pod 'PocketSocket'
 	pod 'ObjectMapper'
 	pod 'PureLayout'
 end

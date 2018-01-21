@@ -40,7 +40,7 @@ extension UIViewController {
             return objc_getAssociatedObject(self, &UIViewController.loadingViewKey) as? UIView
         }
         set {
-            objc_setAssociatedObject(self, &UIViewController.loadingViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(self, &UIViewController.loadingViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
         }
     }
 }
