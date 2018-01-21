@@ -10,7 +10,6 @@ import Foundation
 
 protocol QuotesClientDelegate: class {
     func connected()
-    func subscriptionUpdated(subscriprion: SubsciptionResponse)
     func ticksUpdated(ticks: [Tick])
     func errorHappened(error: Error)
 }
@@ -20,6 +19,7 @@ protocol QuotesClient: class {
     var delegate: QuotesClientDelegate? { get set }
     func connect()
     func disconnect()
-    func subscibe(pairs: [Pairs])
-    func unsubscribe(pairs: [Pairs])
+    typealias SubscriptionCallback = (SubsciptionResponse) -> ()
+    func subscibe(pairs: [Pairs], callback: @escaping SubscriptionCallback)
+    func unsubscribe(pairs: [Pairs], callback: @escaping SubscriptionCallback)
 }

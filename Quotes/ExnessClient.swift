@@ -32,18 +32,21 @@ class ExnessClient: NSObject, QuotesClient {
     }
     
     func disconnect() {
+        subscriptionCallback = nil
         socket?.close()
         socket?.delegate = nil
         socket = nil
     }
     
-    func subscibe(pairs: [Pairs]) {
+    func subscibe(pairs: [Pairs], callback: @escaping QuotesClient.SubscriptionCallback) {
+        subscriptionCallback = callback
         let message = "SUBSCRIBE: \(pairsString(pairs))"
         print(message)
         socket?.send(message)
     }
     
-    func unsubscribe(pairs: [Pairs]) {
+    func unsubscribe(pairs: [Pairs], callback: @escaping QuotesClient.SubscriptionCallback) {
+        subscriptionCallback = callback
         let message = "UNSUBSCRIBE: \(pairsString(pairs))"
         print(message)
         socket?.send(message)
@@ -51,6 +54,7 @@ class ExnessClient: NSObject, QuotesClient {
     
     private var socket: PSWebSocket?
     private let urlString: String
+    private var subscriptionCallback: SubscriptionCallback?
 
     private func pairsString(_ pairs: [Pairs]) -> String {
         if pairs.isEmpty {
@@ -62,7 +66,7 @@ class ExnessClient: NSObject, QuotesClient {
     }
     
     deinit {
-        socket?.close()
+        disconnect()
     }
 }
 
@@ -79,7 +83,7 @@ extension ExnessClient: PSWebSocketDelegate {
         let text = message as! String
         print(text)
         if let subscription = SubsciptionResponse(JSONString: text) {
-            delegate?.subscriptionUpdated(subscriprion: subscription)
+            subscriptionCallback?(subscription)
         }
         else if let tick = TickResponse(JSONString: text) {
             delegate?.ticksUpdated(ticks: tick.ticks)

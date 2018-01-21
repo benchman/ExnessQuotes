@@ -98,7 +98,12 @@ extension QuotesViewController: UITableViewDataSource {
 }
 
 extension QuotesViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            presenter.delete(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+        }
+    }
 }
 
 extension QuotesViewController: QuotesView {

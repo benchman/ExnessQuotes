@@ -16,6 +16,7 @@ protocol QuotesPresenting {
     func numberOfQuotes() -> Int
     func quote(at index: Int) -> QuoteViewData
     func updatePairs(_ pairs: [Pairs])
+    func delete(at index: Int)
     func pairsListPresenter() -> PairsListPresenting
     func appSuspended()
     func appResumed()
@@ -62,11 +63,19 @@ class QuotesPresenter: QuotesPresenting {
     
     func updatePairs(_ pairs: [Pairs]) {
         view?.showLoader()
-        let old = self.pairs
-        self.pairs = pairs
         prefs.savePairs(pairs)
-        unsubscribing = true
-        quotesClient.unsubscribe(pairs: old)
+        let old = self.pairs
+        quotesClient.unsubscribe(pairs: old) { [weak self] _ in
+            self?.pairs = pairs
+            self?.subscribe()
+        }
+    }
+    
+    func delete(at index: Int) {
+        let pair = pairs.remove(at: index)
+        prefs.savePairs(pairs)
+        quotes.remove(at: index)
+        quotesClient.unsubscribe(pairs: [pair]) { _ in }
     }
     
     func pairsListPresenter() -> PairsListPresenting {
@@ -85,12 +94,15 @@ class QuotesPresenter: QuotesPresenting {
     private let prefs: PrefsStroring
     private var pairs: [Pairs] = Pairs.all
     private var quotes: [QuoteViewData] = []
-    private var unsubscribing: Bool = false
     private var isConnected: Bool = false
     private var networkChecker: NetworkStatusChecking
     
     private func subscribe() {
-        quotesClient.subscibe(pairs: pairs)
+        quotesClient.subscibe(pairs: pairs) { [weak self] subscription in
+            self?.update(ticks: subscription.ticks)
+            self?.view?.hideLoader()
+            self?.view?.updateQuotes()
+        }
     }
     
     private func update(ticks: [Tick]) {
@@ -121,17 +133,6 @@ private func mapped(_ ticks: [Tick]) -> [QuoteViewData] {
 extension QuotesPresenter: QuotesClientDelegate {
     func connected() {
         subscribe()
-    }
-    
-    func subscriptionUpdated(subscriprion: SubsciptionResponse) {
-        if unsubscribing {
-            unsubscribing = false
-            subscribe()
-            return
-        }
-        update(ticks: subscriprion.ticks)
-        view?.hideLoader()
-        view?.updateQuotes()
     }
     
     func ticksUpdated(ticks: [Tick]) {
