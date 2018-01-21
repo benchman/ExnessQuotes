@@ -17,14 +17,8 @@ protocol QuotesView: class {
 }
 
 class QuotesViewController: UIViewController {
-    lazy var presenter: QuotesPresenting! = {
-        let url = "wss://quotes.exness.com:18400"
-        let client = ExnessClient(urlString: url)
-        let prefs = PrefsStorage()
-        let networkChecker = NetworkStatusChecker()
-        return QuotesPresenter(qoutesClient: client, prefs: prefs, networkChecker: networkChecker)
-    }()
-
+    var presenter: QuotesPresenting!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.view = self

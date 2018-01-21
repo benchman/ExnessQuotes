@@ -15,7 +15,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let url = "wss://quotes.exness.com:18400"
+        let client = ExnessClient(urlString: url)
+        let prefs = PrefsStorage()
+        let networkChecker = NetworkStatusChecker()
+        let presenter = QuotesPresenter(qoutesClient: client, prefs: prefs, networkChecker: networkChecker)
+        let nav = window?.rootViewController as! UINavigationController
+        let quotesVC = nav.viewControllers.first as! QuotesViewController
+        quotesVC.presenter = presenter
         return true
     }
 
