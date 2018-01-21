@@ -8,15 +8,26 @@
 
 import Foundation
 
+protocol PairsListPresenting {
+    init(pairs: [Pairs])
+    var view: PairsListView? { get set }
+    func numberOfPairs() -> Int
+    func pair(at index: Int) -> SelectedPair
+    func update(at index: Int)
+    func selectedPairs() -> [Pairs]
+}
+
 struct SelectedPair {
     let pair: Pairs
     var selected: Bool
 }
 
-class PairsListPresenter {
-    init(pairs: [Pairs]) {
+class PairsListPresenter: PairsListPresenting {
+    required init(pairs: [Pairs]) {
         setInitialPairs(pairs: pairs)
     }
+    
+    weak var view: PairsListView?
     
     func numberOfPairs() -> Int {
         return pairs.count

@@ -16,10 +16,12 @@ protocol QuotesView: class {
 }
 
 class QuotesViewController: UIViewController {
-    lazy var presenter: QuotesPresenter! = {
-        let client = ExnessClient(urlString: "wss://quotes.exness.com:18400")
+    lazy var presenter: QuotesPresenting! = {
+        let url = "wss://quotes.exness.com:18400"
+        let client = ExnessClient(urlString: url)
         let prefs = PrefsStorage()
-        return QuotesPresenter(qoutesClient: client, prefs: prefs)
+        let networkChecker = NetworkStatusChecker(urlString: url)
+        return QuotesPresenter(qoutesClient: client, prefs: prefs, networkChecker: networkChecker)
     }()
 
     override func viewDidLoad() {

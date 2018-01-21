@@ -28,6 +28,7 @@
 		B4D18BAB2014F64600E1CF3D /* PairsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D18BAA2014F64600E1CF3D /* PairsListViewController.swift */; };
 		B4D18BAD2014F77100E1CF3D /* PairsListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D18BAC2014F77100E1CF3D /* PairsListPresenter.swift */; };
 		B4D18BAF201512E900E1CF3D /* PrefsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D18BAE201512E900E1CF3D /* PrefsStorage.swift */; };
+		B4D18BB12015183900E1CF3D /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D18BB02015183900E1CF3D /* Reachability.swift */; };
 		D7FEAE3F3712A04EB5EE96C8 /* Pods_Quotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98E5D3B86CAB4260E3EE1509 /* Pods_Quotes.framework */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		B4D18BAA2014F64600E1CF3D /* PairsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairsListViewController.swift; sourceTree = "<group>"; };
 		B4D18BAC2014F77100E1CF3D /* PairsListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairsListPresenter.swift; sourceTree = "<group>"; };
 		B4D18BAE201512E900E1CF3D /* PrefsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsStorage.swift; sourceTree = "<group>"; };
+		B4D18BB02015183900E1CF3D /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		B5F43B5B100C6937FE95E460 /* Pods-Quotes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quotes.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quotes/Pods-Quotes.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,6 +134,7 @@
 				B4D18BAA2014F64600E1CF3D /* PairsListViewController.swift */,
 				B4D18BAC2014F77100E1CF3D /* PairsListPresenter.swift */,
 				B4D18BAE201512E900E1CF3D /* PrefsStorage.swift */,
+				B4D18BB02015183900E1CF3D /* Reachability.swift */,
 			);
 			path = Quotes;
 			sourceTree = "<group>";
@@ -218,12 +221,14 @@
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/PocketSocket/PocketSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PocketSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -284,6 +289,7 @@
 				B4C0DEF32014B74A0061C1F5 /* FloatTransformer.swift in Sources */,
 				B4B5F268201484A000BAD470 /* Pairs.swift in Sources */,
 				B4B5F2702014938A00BAD470 /* QoutesPresenter.swift in Sources */,
+				B4D18BB12015183900E1CF3D /* Reachability.swift in Sources */,
 				B4C0DEF92014C0160061C1F5 /* UIViewController+LoadingView.swift in Sources */,
 				B4D18BAB2014F64600E1CF3D /* PairsListViewController.swift in Sources */,
 				B4B5F26A2014875000BAD470 /* SubscriptionResponse.swift in Sources */,

@@ -8,10 +8,14 @@
 
 import UIKit
 
+protocol PairsListView: class {
+    
+}
+
 class PairsListViewController: UIViewController {
     typealias SelectionCallback = ([Pairs]) -> ()
     
-    static func present(from: UIViewController, presenter: PairsListPresenter, callback: @escaping SelectionCallback) {
+    static func present(from: UIViewController, presenter: PairsListPresenting, callback: @escaping SelectionCallback) {
         let navigation = from.storyboard?.instantiateViewController(withIdentifier: "PairsList") as! UINavigationController
         let vc = navigation.viewControllers.first! as! PairsListViewController
         vc.presenter = presenter
@@ -21,6 +25,7 @@ class PairsListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.view = self
     }
     
     @IBAction func cancelTouched(_ sender: Any) {
@@ -33,7 +38,7 @@ class PairsListViewController: UIViewController {
     }
     
     private var callback: SelectionCallback!
-    private var presenter: PairsListPresenter!
+    private var presenter: PairsListPresenting!
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.tableFooterView = UIView()
@@ -61,4 +66,8 @@ extension PairsListViewController: UITableViewDelegate {
         presenter.update(at: indexPath.row)
         tableView.reloadRows(at: [indexPath], with: .none)
     }
+}
+
+extension PairsListViewController: PairsListView {
+    
 }

@@ -8,8 +8,21 @@
 
 import Foundation
 
-class QuotesPresenter {
-    init(qoutesClient: QuotesClient, prefs: PrefsStroring) {
+protocol QuotesPresenting {
+    init(qoutesClient: QuotesClient, prefs: PrefsStroring, networkChecker: NetworkStatusChecking)
+    var view: QuotesView? { get set }
+    func connect()
+    func disconnect()
+    func numberOfQuotes() -> Int
+    func quote(at index: Int) -> QuoteViewData
+    func updatePairs(_ pairs: [Pairs])
+    func pairsListPresenter() -> PairsListPresenting
+    func appSuspended()
+    func appResumed()
+}
+
+class QuotesPresenter: QuotesPresenting {
+    required init(qoutesClient: QuotesClient, prefs: PrefsStroring, networkChecker: NetworkStatusChecking) {
         self.quotesClient = qoutesClient
         self.prefs = prefs
         pairs = prefs.loadPairs()
@@ -45,7 +58,7 @@ class QuotesPresenter {
         quotesClient.unsubscribe(pairs: old)
     }
     
-    func pairsListPresenter() -> PairsListPresenter {
+    func pairsListPresenter() -> PairsListPresenting {
         return PairsListPresenter(pairs: pairs)
     }
     
