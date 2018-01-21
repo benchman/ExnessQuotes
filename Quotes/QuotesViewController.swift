@@ -25,6 +25,16 @@ class QuotesViewController: UIViewController {
         super.viewDidLoad()
         presenter.view = self
         presenter.connect()
+        NotificationCenter.default.addObserver(self, selector: #selector(appSuspended), name: .UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appResumed), name: .UIApplicationWillEnterForeground, object: nil)
+    }
+    
+    @objc func appSuspended() {
+        presenter.appSuspended()
+    }
+    
+    @objc func appResumed() {
+        presenter.appResumed()
     }
     
     override var isLoading: Bool {

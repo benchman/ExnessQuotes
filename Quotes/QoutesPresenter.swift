@@ -11,14 +11,19 @@ import Foundation
 class QuotesPresenter {
     init(qoutesClient: QuotesClient) {
         self.quotesClient = qoutesClient
-        qoutesClient.delegate = self
     }
     
     weak var view: QuotesView?
     
     func connect() {
         self.view?.showLoader()
+        quotesClient.delegate = self
         quotesClient.connect()
+    }
+    
+    func disconnect() {
+        quotesClient.delegate = nil
+        quotesClient.disconnect()
     }
     
     func numberOfQuotes() -> Int {
@@ -39,6 +44,14 @@ class QuotesPresenter {
     
     func pairsListPresenter() -> PairsListPresenter {
         return PairsListPresenter(pairs: pairs)
+    }
+    
+    func appSuspended() {
+        disconnect()
+    }
+    
+    func appResumed() {
+        connect()
     }
     
     private let quotesClient: QuotesClient

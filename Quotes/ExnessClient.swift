@@ -14,66 +14,38 @@ class ExnessClient: NSObject, QuotesClient {
     weak var delegate: QuotesClientDelegate?
     
     required init(urlString: String) {
-        let url = URL(string: urlString)!
-        let request = URLRequest(url: url)
-        socket = PSWebSocket.clientSocket(with: request)
+        self.urlString = urlString
         super.init()
-        socket.delegate = self
-//        socket.event.open = { [weak self] in
-//            DispatchQueue.main.async {
-//                self?.delegate?.connected()
-//            }
-//        }
-//
-//        socket.event.close = { [weak self] (code, reason, wasClean) in
-//            print("code \(code)")
-//        }
-//
-//        socket.event.error = { [weak self] error in
-//            DispatchQueue.main.async {
-//                self?.delegate?.errorHappened(error: error)
-//            }
-//        }
-//
-//        socket.event.message = { [weak self] data in
-//            DispatchQueue.main.async {
-//                let message = data as! String
-//                print("message \(message)")
-//                if let subscription = SubsciptionResponse(JSONString: message) {
-//                    self?.delegate?.subscriptionUpdated(subscriprion: subscription)
-//                }
-//                else if let tick = TickResponse(JSONString: message) {
-//                    self?.delegate?.ticksUpdated(ticks: tick.ticks)
-//                }
-//            }
-//        }
-//
-//        socket.event.pong = { [weak self] pong in
-//            print("pong \(pong)")
-//        }
     }
     
     func connect() {
-        socket.open()
+        let url = URL(string: urlString)!
+        let request = URLRequest(url: url)
+        socket = PSWebSocket.clientSocket(with: request)
+        socket?.delegate = self
+        socket?.open()
     }
     
     func disconnect() {
-        socket.close()
+        socket?.close()
+        socket?.delegate = nil
+        socket = nil
     }
     
     func subscibe(pairs: [Pairs]) {
         let message = "SUBSCRIBE: \(pairsString(pairs))"
         print(message)
-        socket.send(message)
+        socket?.send(message)
     }
     
     func unsubscribe(pairs: [Pairs]) {
         let message = "UNSUBSCRIBE: \(pairsString(pairs))"
         print(message)
-        socket.send(message)
+        socket?.send(message)
     }
     
-    private let socket: PSWebSocket
+    private var socket: PSWebSocket?
+    private let urlString: String
 
     private func pairsString(_ pairs: [Pairs]) -> String {
         if pairs.isEmpty {
@@ -85,7 +57,7 @@ class ExnessClient: NSObject, QuotesClient {
     }
     
     deinit {
-        socket.close()
+        socket?.close()
     }
 }
 
