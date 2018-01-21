@@ -17,6 +17,7 @@ protocol QuotesPresenting {
     func quote(at index: Int) -> QuoteViewData
     func updatePairs(_ pairs: [Pairs])
     func delete(at index: Int)
+    func move(from: Int, to: Int)
     func pairsListPresenter() -> PairsListPresenting
     func appSuspended()
     func appResumed()
@@ -78,6 +79,11 @@ class QuotesPresenter: QuotesPresenting {
         quotesClient.unsubscribe(pairs: [pair]) { _ in }
     }
     
+    func move(from: Int, to: Int) {
+        pairs.swapAt(from, to)
+        prefs.savePairs(pairs)
+    }
+    
     func pairsListPresenter() -> PairsListPresenting {
         return PairsListPresenter(pairs: pairs)
     }
@@ -99,15 +105,19 @@ class QuotesPresenter: QuotesPresenting {
     
     private func subscribe() {
         quotesClient.subscibe(pairs: pairs) { [weak self] subscription in
-            self?.update(ticks: subscription.ticks)
-            self?.view?.hideLoader()
-            self?.view?.updateQuotes()
+            self?.update(subscription: subscription)
         }
+    }
+    
+    private func update(subscription: SubsciptionResponse) {
+        update(ticks: subscription.ticks)
+        view?.hideLoader()
+        view?.updateQuotes()
     }
     
     private func update(ticks: [Tick]) {
         let ordered = reorder(ticks: ticks)
-        quotes = mapped(ordered)
+        quotes = ordered.map { mapped($0) }
     }
     
     private func reorder(ticks: [Tick]) -> [Tick] {
@@ -121,13 +131,11 @@ class QuotesPresenter: QuotesPresenting {
     }
 }
 
-private func mapped(_ ticks: [Tick]) -> [QuoteViewData] {
-    return ticks.map { tick -> QuoteViewData in
-        let symbol = tick.pair.displayedTitle
-        let bidAsk = String(tick.bid) + " / " + String(tick.ask)
-        let spread = String(tick.spread)
-        return QuoteViewData(symbol: symbol, bidAsk: bidAsk, spread: spread)
-    }
+private func mapped(_ tick: Tick) -> QuoteViewData {
+    let symbol = tick.pair.displayedTitle
+    let bidAsk = String(tick.bid) + " / " + String(tick.ask)
+    let spread = String(tick.spread)
+    return QuoteViewData(symbol: symbol, bidAsk: bidAsk, spread: spread)
 }
 
 extension QuotesPresenter: QuotesClientDelegate {
@@ -136,7 +144,14 @@ extension QuotesPresenter: QuotesClientDelegate {
     }
     
     func ticksUpdated(ticks: [Tick]) {
-        view?.updateQuotes()
+        var indexes: [Int] = []
+        for tick in ticks {
+            let index = pairs.index(of: tick.pair)!
+            indexes.append(index)
+            let quote = mapped(tick)
+            quotes[index] = quote
+        }
+        view?.updateQuotes(at: indexes)
     }
     
     func errorHappened(error: Error) {

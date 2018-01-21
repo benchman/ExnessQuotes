@@ -9,6 +9,7 @@
 import UIKit
 
 protocol QuotesView: class {
+    func updateQuotes(at indexes: [Int])
     func updateQuotes()
     func showError(_ error: Error)
     func showLoader()
@@ -95,18 +96,25 @@ extension QuotesViewController: UITableViewDataSource {
         cell.spreadLabel.text = quote.spread
         return cell
     }
-}
-
-extension QuotesViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             presenter.delete(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
         }
     }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        presenter.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+    }
 }
 
 extension QuotesViewController: QuotesView {
+    func updateQuotes(at indexes: [Int]) {
+        let indexPaths = indexes.map { IndexPath(row: $0, section: 0) }
+        tableView.reloadRows(at: indexPaths, with: .none)
+    }
+    
     func updateQuotes() {
         tableView.reloadData()
     }
