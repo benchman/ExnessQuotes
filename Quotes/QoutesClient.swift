@@ -8,17 +8,18 @@
 
 import Foundation
 
-protocol QuotesClientDelegate {
+protocol QuotesClientDelegate: class {
+    func connected()
+    func subscriptionUpdated(subscriprion: SubsciptionResponse)
     func ticksUpdated(ticks: [Tick])
-    func connectionLost(error: Error?)
+    func errorHappened(error: Error)
 }
 
-typealias ConnectCallback = (Error?) -> ()
-typealias SubsciptionCallback = (SubsciptionResponse?, Error?) -> ()
-
-protocol QuotesClient {
-    init(url: URL, delegate: QuotesClientDelegate)
-    func connect(callback: @escaping ConnectCallback)
+protocol QuotesClient: class {
+    init(urlString: String)
+    var delegate: QuotesClientDelegate? { get set }
+    func connect()
     func disconnect()
-    func subscibe(pairs: [Pairs], callback: @escaping SubsciptionCallback)
+    func subscibe(pairs: [Pairs])
+    func unsubscribe(pairs: [Pairs])
 }

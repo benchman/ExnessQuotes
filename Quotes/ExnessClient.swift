@@ -7,72 +7,75 @@
 //
 
 import Foundation
-import Starscream
+import SwiftWebSocket
 import ObjectMapper
 
 class ExnessClient: QuotesClient {
-    required init(url: URL, delegate: QuotesClientDelegate) {
-        socket = WebSocket(url: url)
-        self.delegate = delegate
+    weak var delegate: QuotesClientDelegate?
+    
+    required init(urlString: String) {
+        url = urlString
+        socket = WebSocket()
+        socket.event.open = { [weak self] in
+            DispatchQueue.main.async {
+                self?.delegate?.connected()
+            }
+        }
+        
+        socket.event.close = { [weak self] (code, reason, wasClean) in
+            print("code \(code)")
+        }
+        
+        socket.event.error = { [weak self] error in
+            DispatchQueue.main.async {
+                self?.delegate?.errorHappened(error: error)
+            }
+        }
+        
+        socket.event.message = { [weak self] data in
+            DispatchQueue.main.async {
+                let message = data as! String
+                print("message \(message)")
+                if let subscription = SubsciptionResponse(JSONString: message) {
+                    self?.delegate?.subscriptionUpdated(subscriprion: subscription)
+                }
+                else if let tick = TickResponse(JSONString: message) {
+                    self?.delegate?.ticksUpdated(ticks: tick.ticks)
+                }
+            }
+        }
+        
+        socket.event.pong = { [weak self] pong in
+            print("pong \(pong)")
+        }
     }
     
-    func connect(callback: @escaping ConnectCallback) {
-        connectCallback = callback
-        socket.connect()
+    func connect() {
+        socket.open(url)
     }
     
     func disconnect() {
-        socket.disconnect()
+        socket.close()
     }
     
-    func subscibe(pairs: [Pairs], callback: @escaping SubsciptionCallback) {
-        subscriptionCallback = callback
+    func subscibe(pairs: [Pairs]) {
         let message = "SUBSCRIBE: \(pairsString(pairs))"
-        socket.write(string: message)
+        socket.send(text: message)
     }
     
-    func unsubscribe(pairs: [Pairs], callback: @escaping SubsciptionCallback) {
-        subscriptionCallback = callback
+    func unsubscribe(pairs: [Pairs]) {
         let message = "UNSUBSCRIBE: \(pairsString(pairs))"
-        socket.write(string: message)
+        socket.send(text: message)
     }
     
+    private let url: String
     private let socket: WebSocket
-    private let delegate: QuotesClientDelegate
-    private var connectCallback: ConnectCallback?
-    private var subscriptionCallback: SubsciptionCallback?
-    
+
     private func pairsString(_ pairs: [Pairs]) -> String {
         return pairs.map { $0.rawValue }.joined(separator: ",")
     }
-}
-
-extension ExnessClient: WebSocketDelegate {
-    func websocketDidConnect(socket: WebSocketClient) {
-        connectCallback?(nil)
-        connectCallback = nil
-    }
     
-    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-        if connectCallback != nil {
-            connectCallback?(error)
-            connectCallback = nil
-        }
-        else {
-            delegate.connectionLost(error: error)
-        }
-    }
-    
-    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
-        if let subscription = SubsciptionResponse(JSONString: text) {
-            subscriptionCallback?(subscription, nil)
-        }
-        else if let tick = TickResponse(JSONString: text) {
-            delegate.ticksUpdated(ticks: tick.ticks)
-        }
-    }
-    
-    func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
-        
+    deinit {
+        socket.close(1000)
     }
 }

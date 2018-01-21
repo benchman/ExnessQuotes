@@ -11,9 +11,9 @@ import ObjectMapper
 
 struct Tick: Mappable {
     var pair: Pairs!
-    var bid: Double!
-    var ask: Double!
-    var spread: Double!
+    var bid: String!
+    var ask: String!
+    var spread: String!
     
     init?(map: Map) {
         
@@ -23,6 +23,6 @@ struct Tick: Mappable {
         pair <- map["s"]
         bid <- map["b"]
         ask <- map["a"]
-        spread <- map["s"]
+        spread <- map["spr"]
     }
 }
