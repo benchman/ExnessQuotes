@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TickViewData {
+struct QuoteViewData {
     let symbol: String
     let bidAsk: String
     let spread: String

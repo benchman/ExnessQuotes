@@ -12,15 +12,7 @@ extension UIViewController {
     @nonobjc private static var loadingViewKey = "com.benchman.loadingViewKey"
     @nonobjc private static var isLoadingKey = "com.benchman.isLoadingKey"
     
-    public var loadingView: UIView? {
-        get {
-            return objc_getAssociatedObject(self, &UIViewController.loadingViewKey) as? UIView
-        }
-        set {
-            objc_setAssociatedObject(self, &UIViewController.loadingViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
-        }
-    }
-    @objc open var isLoading: Bool {
+    @objc var isLoading: Bool {
         get {
             if let number = objc_getAssociatedObject(self, &UIViewController.isLoadingKey) as? NSNumber {
                 return number.boolValue
@@ -40,6 +32,15 @@ extension UIViewController {
             else {
                 self.loadingView?.removeFromSuperview()
             }
+        }
+    }
+    
+    private var loadingView: UIView? {
+        get {
+            return objc_getAssociatedObject(self, &UIViewController.loadingViewKey) as? UIView
+        }
+        set {
+            objc_setAssociatedObject(self, &UIViewController.loadingViewKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
         }
     }
 }

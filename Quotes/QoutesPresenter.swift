@@ -21,20 +21,51 @@ class QuotesPresenter {
         quotesClient.connect()
     }
     
+    func numberOfQuotes() -> Int {
+        return quotes.count
+    }
+    
+    func quote(at index: Int) -> QuoteViewData {
+        return quotes[index]
+    }
+    
+    func updatePairs(_ pairs: [Pairs]) {
+        let old = pairs
+        quotesClient.unsubscribe(pairs: old)
+        self.pairs = pairs
+    }
+    
     private let quotesClient: QuotesClient
     private var pairs: [Pairs] = Pairs.all
+    private var quotes: [QuoteViewData] = []
+    private var unsubscribing: Bool = false
     
     private func subscribe() {
         quotesClient.subscibe(pairs: pairs)
     }
+    
+    private func update(ticks: [Tick]) {
+        let ordered = reorder(ticks: ticks)
+        quotes = mapped(ordered)
+    }
+    
+    private func reorder(ticks: [Tick]) -> [Tick] {
+        var ordered: [Tick] = []
+        for pair in pairs {
+            if let index = ticks.index(where: { $0.pair == pair }) {
+                ordered.append(ticks[index])
+            }
+        }
+        return ordered
+    }
 }
 
-private func mapped(_ ticks: [Tick]) -> [TickViewData] {
-    return ticks.map { tick -> TickViewData in
+private func mapped(_ ticks: [Tick]) -> [QuoteViewData] {
+    return ticks.map { tick -> QuoteViewData in
         let symbol = tick.pair.displayedTitle
-        let bidAsk = tick.bid! + " / " + tick.ask!
-        let spread = tick.spread!
-        return TickViewData(symbol: symbol, bidAsk: bidAsk, spread: spread)
+        let bidAsk = String(tick.bid) + " / " + String(tick.ask)
+        let spread = String(tick.spread)
+        return QuoteViewData(symbol: symbol, bidAsk: bidAsk, spread: spread)
     }
 }
 
@@ -44,12 +75,17 @@ extension QuotesPresenter: QuotesClientDelegate {
     }
     
     func subscriptionUpdated(subscriprion: SubsciptionResponse) {
+        if unsubscribing {
+            unsubscribing = false
+            subscribe()
+        }
+        update(ticks: subscriprion.ticks)
         view?.hideLoader()
-        view?.showTicks(ticks: mapped(subscriprion.ticks))
+        view?.updateQuotes()
     }
     
     func ticksUpdated(ticks: [Tick]) {
-        view?.showTicks(ticks: mapped(ticks))
+        view?.updateQuotes()
     }
     
     func errorHappened(error: Error) {

@@ -21,7 +21,7 @@
 		B4B5F26E20148C0800BAD470 /* Tick.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B5F26D20148C0800BAD470 /* Tick.swift */; };
 		B4B5F2702014938A00BAD470 /* QoutesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B5F26F2014938A00BAD470 /* QoutesPresenter.swift */; };
 		B4B5F272201493AB00BAD470 /* QuotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B5F271201493AB00BAD470 /* QuotesViewController.swift */; };
-		B4B5F27420149C4100BAD470 /* TickViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B5F27320149C4100BAD470 /* TickViewData.swift */; };
+		B4B5F27420149C4100BAD470 /* QuoteViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B5F27320149C4100BAD470 /* QuoteViewData.swift */; };
 		B4C0DEF32014B74A0061C1F5 /* FloatTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C0DEF22014B74A0061C1F5 /* FloatTransformer.swift */; };
 		B4C0DEF72014C0000061C1F5 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4C0DEF62014C0000061C1F5 /* LoadingView.xib */; };
 		B4C0DEF92014C0160061C1F5 /* UIViewController+LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C0DEF82014C0160061C1F5 /* UIViewController+LoadingView.swift */; };
@@ -47,7 +47,7 @@
 		B4B5F26D20148C0800BAD470 /* Tick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tick.swift; sourceTree = "<group>"; };
 		B4B5F26F2014938A00BAD470 /* QoutesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QoutesPresenter.swift; sourceTree = "<group>"; };
 		B4B5F271201493AB00BAD470 /* QuotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesViewController.swift; sourceTree = "<group>"; };
-		B4B5F27320149C4100BAD470 /* TickViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickViewData.swift; sourceTree = "<group>"; };
+		B4B5F27320149C4100BAD470 /* QuoteViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewData.swift; sourceTree = "<group>"; };
 		B4C0DEF22014B74A0061C1F5 /* FloatTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatTransformer.swift; sourceTree = "<group>"; };
 		B4C0DEF62014C0000061C1F5 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		B4C0DEF82014C0160061C1F5 /* UIViewController+LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+LoadingView.swift"; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 				B4B5F26D20148C0800BAD470 /* Tick.swift */,
 				B4B5F26F2014938A00BAD470 /* QoutesPresenter.swift */,
 				B4B5F271201493AB00BAD470 /* QuotesViewController.swift */,
-				B4B5F27320149C4100BAD470 /* TickViewData.swift */,
+				B4B5F27320149C4100BAD470 /* QuoteViewData.swift */,
 				B49854222014A2AA009B83B2 /* Errors.swift */,
 				B49854242014A528009B83B2 /* QuoteCell.swift */,
 				B4C0DEF22014B74A0061C1F5 /* FloatTransformer.swift */,
@@ -208,13 +208,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Quotes/Pods-Quotes-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftWebSocket/SwiftWebSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftWebSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -264,7 +264,7 @@
 				B4B5F26E20148C0800BAD470 /* Tick.swift in Sources */,
 				B4B5F272201493AB00BAD470 /* QuotesViewController.swift in Sources */,
 				B49854252014A528009B83B2 /* QuoteCell.swift in Sources */,
-				B4B5F27420149C4100BAD470 /* TickViewData.swift in Sources */,
+				B4B5F27420149C4100BAD470 /* QuoteViewData.swift in Sources */,
 				B49854232014A2AA009B83B2 /* Errors.swift in Sources */,
 				B4B5F26C20148BF600BAD470 /* TickResponse.swift in Sources */,
 				B4B5F252201472F200BAD470 /* AppDelegate.swift in Sources */,

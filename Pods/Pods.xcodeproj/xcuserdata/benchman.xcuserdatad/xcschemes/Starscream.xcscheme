@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '41E278E422D5104CC1329577E61EA2F8'
-               BlueprintName = 'SwiftWebSocket'
+               BlueprintIdentifier = 'BF7CDC4C8194B7A4260C50F59F4344FE'
+               BlueprintName = 'Starscream'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SwiftWebSocket.framework'>
+               BuildableName = 'Starscream.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol QuotesView: class {
-    func showTicks(ticks: [TickViewData])
+    func updateQuotes()
     func showError(_ error: Error)
     func showLoader()
     func hideLoader()
@@ -20,13 +20,14 @@ class QuotesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        isLoading = false
         let client = ExnessClient(urlString: "wss://quotes.exness.com:18400")
         presenter = QuotesPresenter(qoutesClient: client)
         presenter.view = self
         presenter.connect()
     }
     
-    private var quotes: [TickViewData] = []
+    private var quotes: [QuoteViewData] = []
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.tableFooterView = UIView()
@@ -41,7 +42,7 @@ extension QuotesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCell", for: indexPath) as! QuoteCell
-        let quote = quotes[indexPath.row]
+        let quote = presenter.quote(at: indexPath.row)
         cell.symbolLabel.text = quote.symbol
         cell.bidAskLabel.text = quote.bidAsk
         cell.spreadLabel.text = quote.spread
@@ -49,9 +50,12 @@ extension QuotesViewController: UITableViewDataSource {
     }
 }
 
+extension QuotesViewController: UITableViewDelegate {
+    
+}
+
 extension QuotesViewController: QuotesView {
-    func showTicks(ticks: [TickViewData]) {
-        quotes = ticks
+    func updateQuotes() {
         tableView.reloadData()
     }
     

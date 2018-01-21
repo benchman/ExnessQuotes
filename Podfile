@@ -3,7 +3,7 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'Quotes' do
-	pod 'SwiftWebSocket'
+	pod 'Starscream'
 	pod 'ObjectMapper'
 	pod 'PureLayout'
 end
