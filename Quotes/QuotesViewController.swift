@@ -56,9 +56,28 @@ class QuotesViewController: UIViewController {
     @IBOutlet weak var editButton: UIBarButtonItem!
     
     @IBAction func editTouched(_ sender: Any) {
+        editMode = !editMode
+    }
+    
+    @objc func showAll() {
         let pairsListPresenter = presenter.pairsListPresenter()
         PairsListViewController.present(from: self, presenter: pairsListPresenter) { [unowned self] pairs in
             self.presenter.updatePairs(pairs)
+        }
+        editMode = false
+    }
+    
+    private var editMode: Bool = false {
+        didSet {
+            if editMode {
+                tableView.isEditing = true
+                let button = UIBarButtonItem(title: "Show All", style: .plain, target: self, action: #selector(showAll))
+                navigationItem.rightBarButtonItem = button
+            }
+            else {
+                tableView.isEditing = false
+                navigationItem.rightBarButtonItem = nil
+            }
         }
     }
 }
