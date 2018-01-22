@@ -16,8 +16,8 @@ protocol QuotesPresenting {
     func numberOfQuotes() -> Int
     func quote(at index: Int) -> QuoteViewData
     func updatePairs(_ pairs: [Pairs])
-    func delete(at index: Int)
-    func move(from: Int, to: Int)
+    func deletePair(at index: Int)
+    func movePair(from: Int, to: Int)
     func pairsListPresenter() -> PairsListPresenting
     func appSuspended()
     func appResumed()
@@ -72,14 +72,14 @@ class QuotesPresenter: QuotesPresenting {
         }
     }
     
-    func delete(at index: Int) {
+    func deletePair(at index: Int) {
         let pair = pairs.remove(at: index)
         prefs.savePairs(pairs)
         quotes.remove(at: index)
         quotesClient.unsubscribe(pairs: [pair]) { _ in }
     }
     
-    func move(from: Int, to: Int) {
+    func movePair(from: Int, to: Int) {
         pairs.swapAt(from, to)
         prefs.savePairs(pairs)
     }

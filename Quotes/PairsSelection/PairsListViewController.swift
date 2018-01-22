@@ -63,7 +63,7 @@ extension PairsListViewController: UITableViewDataSource {
 extension PairsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        presenter.update(at: indexPath.row)
+        presenter.selectPair(at: indexPath.row)
         tableView.reloadRows(at: [indexPath], with: .none)
     }
 }

@@ -68,10 +68,12 @@ class QuotesViewController: UIViewController {
                 tableView.isEditing = true
                 let button = UIBarButtonItem(title: "Show All", style: .plain, target: self, action: #selector(showAll))
                 navigationItem.rightBarButtonItem = button
+                editButton.title = "Cancel"
             }
             else {
                 tableView.isEditing = false
                 navigationItem.rightBarButtonItem = nil
+                editButton.title = "Edit"
             }
         }
     }
@@ -85,28 +87,42 @@ extension QuotesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCell", for: indexPath) as! QuoteCell
         let quote = presenter.quote(at: indexPath.row)
-        cell.symbolLabel.text = quote.symbol
-        cell.bidAskLabel.text = quote.bidAsk
-        cell.spreadLabel.text = quote.spread
+        fill(cell: cell, quote: quote)
         return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            presenter.delete(at: indexPath.row)
+            presenter.deletePair(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
         }
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        presenter.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+        presenter.movePair(from: sourceIndexPath.row, to: destinationIndexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return editMode
+    }
+    
+    func fill(cell: QuoteCell, quote: QuoteViewData) {
+        cell.symbolLabel.text = quote.symbol
+        cell.bidAskLabel.text = quote.bidAsk
+        cell.spreadLabel.text = quote.spread
     }
 }
 
 extension QuotesViewController: QuotesView {
     func updateQuotes(at indexes: [Int]) {
-        let indexPaths = indexes.map { IndexPath(row: $0, section: 0) }
-        tableView.reloadRows(at: indexPaths, with: .none)
+        for index in indexes {
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) as? QuoteCell {
+                let quote = presenter.quote(at: index)
+                fill(cell: cell, quote: quote)
+            }
+            
+        }
     }
     
     func updateQuotes() {

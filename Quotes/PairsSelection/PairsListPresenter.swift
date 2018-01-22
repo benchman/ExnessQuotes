@@ -13,7 +13,7 @@ protocol PairsListPresenting {
     var view: PairsListView? { get set }
     func numberOfPairs() -> Int
     func pair(at index: Int) -> SelectedPair
-    func update(at index: Int)
+    func selectPair(at index: Int)
     func selectedPairs() -> [Pairs]
 }
 
@@ -37,7 +37,7 @@ class PairsListPresenter: PairsListPresenting {
         return pairs[index]
     }
     
-    func update(at index: Int) {
+    func selectPair(at index: Int) {
         let selected = pairs[index].selected
         pairs[index].selected = !selected
     }

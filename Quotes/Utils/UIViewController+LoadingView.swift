@@ -20,10 +20,10 @@ extension UIViewController {
             return false
         }
         set {
-            let old = isLoading
+            if isLoading == newValue { return }
             let number = NSNumber(value: newValue)
             objc_setAssociatedObject(self, &UIViewController.isLoadingKey, number, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            if newValue && !old {
+            if newValue {
                 let view = Bundle.main.loadNibNamed("LoadingView", owner: self, options: nil)!.first! as! UIView
                 view.configureForAutoLayout()
                 self.view.addSubview(view)
@@ -32,6 +32,7 @@ extension UIViewController {
             }
             else {
                 self.loadingView?.removeFromSuperview()
+                self.loadingView = nil
             }
         }
     }
