@@ -19,9 +19,9 @@ class ExnessClient: NSObject, QuotesClient {
     }
     
     func connect() {
-        print("connect")
-        if socket != nil && socket!.readyState != .closed  {
-            print("socket already opened")
+        if let socket = socket,
+            socket.readyState != .closing,
+            socket.readyState != .closed  {
             return
         }
         let url = URL(string: urlString)!

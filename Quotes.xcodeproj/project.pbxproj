@@ -117,26 +117,66 @@
 				B4B5F258201472F200BAD470 /* Assets.xcassets */,
 				B4B5F25A201472F200BAD470 /* LaunchScreen.storyboard */,
 				B4B5F25D201472F200BAD470 /* Info.plist */,
+				B4D18BB220166EE500E1CF3D /* Network */,
+				B4D18BB420166F3B00E1CF3D /* QuotesList */,
+				B4D18BB620166F6C00E1CF3D /* Utils */,
+				B4D18BB520166F5400E1CF3D /* PairsSelection */,
+			);
+			path = Quotes;
+			sourceTree = "<group>";
+		};
+		B4D18BB220166EE500E1CF3D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B4D18BB320166F0700E1CF3D /* Mappings */,
 				B4B5F26320147F4700BAD470 /* QoutesClient.swift */,
 				B4B5F26520147FCA00BAD470 /* ExnessClient.swift */,
-				B4B5F267201484A000BAD470 /* Pairs.swift */,
+				B49854222014A2AA009B83B2 /* Errors.swift */,
+				B4D18BB02015183900E1CF3D /* Reachability.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		B4D18BB320166F0700E1CF3D /* Mappings */ = {
+			isa = PBXGroup;
+			children = (
 				B4B5F2692014875000BAD470 /* SubscriptionResponse.swift */,
 				B4B5F26B20148BF600BAD470 /* TickResponse.swift */,
 				B4B5F26D20148C0800BAD470 /* Tick.swift */,
+				B4C0DEF22014B74A0061C1F5 /* FloatTransformer.swift */,
+			);
+			path = Mappings;
+			sourceTree = "<group>";
+		};
+		B4D18BB420166F3B00E1CF3D /* QuotesList */ = {
+			isa = PBXGroup;
+			children = (
 				B4B5F271201493AB00BAD470 /* QuotesViewController.swift */,
 				B4B5F26F2014938A00BAD470 /* QoutesPresenter.swift */,
 				B4B5F27320149C4100BAD470 /* QuoteViewData.swift */,
-				B49854222014A2AA009B83B2 /* Errors.swift */,
 				B49854242014A528009B83B2 /* QuoteCell.swift */,
-				B4C0DEF22014B74A0061C1F5 /* FloatTransformer.swift */,
-				B4C0DEF62014C0000061C1F5 /* LoadingView.xib */,
-				B4C0DEF82014C0160061C1F5 /* UIViewController+LoadingView.swift */,
+			);
+			path = QuotesList;
+			sourceTree = "<group>";
+		};
+		B4D18BB520166F5400E1CF3D /* PairsSelection */ = {
+			isa = PBXGroup;
+			children = (
 				B4D18BAA2014F64600E1CF3D /* PairsListViewController.swift */,
 				B4D18BAC2014F77100E1CF3D /* PairsListPresenter.swift */,
-				B4D18BAE201512E900E1CF3D /* PrefsStorage.swift */,
-				B4D18BB02015183900E1CF3D /* Reachability.swift */,
+				B4B5F267201484A000BAD470 /* Pairs.swift */,
 			);
-			path = Quotes;
+			path = PairsSelection;
+			sourceTree = "<group>";
+		};
+		B4D18BB620166F6C00E1CF3D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B4C0DEF62014C0000061C1F5 /* LoadingView.xib */,
+				B4C0DEF82014C0160061C1F5 /* UIViewController+LoadingView.swift */,
+				B4D18BAE201512E900E1CF3D /* PrefsStorage.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
