@@ -41,14 +41,12 @@ class ExnessClient: NSObject, QuotesClient {
     func subscibe(pairs: [Pairs], callback: @escaping QuotesClient.SubscriptionCallback) {
         subscriptionCallback = callback
         let message = "SUBSCRIBE: \(pairsString(pairs))"
-        print(message)
         socket?.send(message)
     }
     
     func unsubscribe(pairs: [Pairs], callback: @escaping QuotesClient.SubscriptionCallback) {
         subscriptionCallback = callback
         let message = "UNSUBSCRIBE: \(pairsString(pairs))"
-        print(message)
         socket?.send(message)
     }
     
@@ -81,7 +79,6 @@ extension ExnessClient: PSWebSocketDelegate {
     
     func webSocket(_ webSocket: PSWebSocket!, didReceiveMessage message: Any!) {
         let text = message as! String
-        print(text)
         if let subscription = SubsciptionResponse(JSONString: text) {
             subscriptionCallback?(subscription)
         }

@@ -68,7 +68,7 @@ class QuotesViewController: UIViewController {
                 tableView.isEditing = true
                 let button = UIBarButtonItem(title: "Show All", style: .plain, target: self, action: #selector(showAll))
                 navigationItem.rightBarButtonItem = button
-                editButton.title = "Cancel"
+                editButton.title = "Done"
             }
             else {
                 tableView.isEditing = false

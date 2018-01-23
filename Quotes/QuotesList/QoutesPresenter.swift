@@ -146,10 +146,11 @@ extension QuotesPresenter: QuotesClientDelegate {
     func ticksUpdated(ticks: [Tick]) {
         var indexes: [Int] = []
         for tick in ticks {
-            let index = pairs.index(of: tick.pair)!
-            indexes.append(index)
-            let quote = mapped(tick)
-            quotes[index] = quote
+            if let index = pairs.index(of: tick.pair) {
+                indexes.append(index)
+                let quote = mapped(tick)
+                quotes[index] = quote
+            }
         }
         view?.updateQuotes(at: indexes)
     }
